@@ -9,6 +9,7 @@
  * Marius Groeger <mgroeger@sysgo.de>
  */
 
+#include "../drivers/serial/serial_bcm2711_spi.h"
 #include <common.h>
 #include <api.h>
 #include <bootstage.h>
@@ -581,8 +582,9 @@ static int run_main_loop(void)
 #endif
 
 	event_notify_null(EVT_MAIN_LOOP);
+	DEBUG_putc('r');
 
-	/* main_loop() can return to retry autoboot, if so just run it again */
+        /* main_loop() can return to retry autoboot, if so just run it again */
 	for (;;)
 		main_loop();
 	return 0;
@@ -796,6 +798,7 @@ static init_fnc_t init_sequence_r[] = {
 
 void board_init_r(gd_t *new_gd, ulong dest_addr)
 {
+	DEBUG_putc('r');
 	/*
 	 * Set up the new global data pointer. So far only x86 does this
 	 * here.

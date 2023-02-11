@@ -728,45 +728,56 @@ void putc(const char c)
 
 void puts(const char *s)
 {
-	if (!gd)
+	if (!gd) {
+		DEBUG_putc('!');
 		return;
+	}
 
 	console_record_puts(s);
 
 	/* sandbox can send characters to stdout before it has a console */
 	if (IS_ENABLED(CONFIG_SANDBOX) && !(gd->flags & GD_FLG_SERIAL_READY)) {
-		os_puts(s);
-		return;
+          DEBUG_putc('1');
+          os_puts(s);
+          return;
 	}
 
 	if (IS_ENABLED(CONFIG_DEBUG_UART) && !(gd->flags & GD_FLG_SERIAL_READY)) {
-		while (*s) {
-			int ch = *s++;
+          DEBUG_putc('2');
+          while (*s) {
+            int ch = *s++;
 
-			printch(ch);
+            printch(ch);
 		}
 		return;
 	}
 
 	if (IS_ENABLED(CONFIG_SILENT_CONSOLE) && (gd->flags & GD_FLG_SILENT)) {
-		if (!(gd->flags & GD_FLG_DEVINIT))
-			pre_console_puts(s);
-		return;
+          DEBUG_putc('3');
+          if (!(gd->flags & GD_FLG_DEVINIT))
+            pre_console_puts(s);
+          return;
 	}
 
-	if (IS_ENABLED(CONFIG_DISABLE_CONSOLE) && (gd->flags & GD_FLG_DISABLE_CONSOLE))
-		return;
+	if (IS_ENABLED(CONFIG_DISABLE_CONSOLE) && (gd->flags & GD_FLG_DISABLE_CONSOLE)) {
+          DEBUG_putc('4');
+          return;
+        }
 
-	if (!gd->have_console)
-		return pre_console_puts(s);
+	if (!gd->have_console) {
+          DEBUG_putc('5');
+          return pre_console_puts(s);
+	}
 
 	if (gd->flags & GD_FLG_DEVINIT) {
-		/* Send to the standard output */
-		fputs(stdout, s);
+          DEBUG_putc('6');
+          /* Send to the standard output */
+          fputs(stdout, s);
 	} else {
-		/* Send directly to the handler */
-		pre_console_puts(s);
-		serial_puts(s);
+          DEBUG_putc('7');
+          /* Send directly to the handler */
+          pre_console_puts(s);
+          serial_puts(s);
 	}
 }
 
