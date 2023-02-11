@@ -144,7 +144,7 @@ void init_gpio(volatile struct GPIO *gpio) {
 #define SPI_STAT_BUSY 0x00000040
 #define SPI_STAT_BIT_CNT_MASK 0x0000003F
 
-void init_spi(volatile struct *AUX aux, volatile struct *SPI spi[2],
+void init_spi(volatile struct AUX *aux, volatile struct SPI *spi[2],
               u32 channel) {
   u32 reg = aux->ENABLES;
   reg |= (2 << channel);
@@ -157,7 +157,7 @@ void init_spi(volatile struct *AUX aux, volatile struct *SPI spi[2],
   spi[channel]->CNTL1 = SPI_CNTL1_SI_MSB_FST;
 }
 
-static void spi_send_recv(volatile struct *SPI spi[2], u32 channel,
+static void spi_send_recv(volatile struct SPI *spi[2], u32 channel,
                           const char *sendbuf, size_t sendlen, char *recvbuf,
                           size_t recvlen) {
   size_t sendidx = 0;
@@ -234,7 +234,7 @@ static void spi_send_recv(volatile struct *SPI spi[2], u32 channel,
 #define UART_EFR_ENABLE_ENHANCED_FNS 0x10
 #define UART_IOControl_RESET 0x08
 
-static void uart_write_register(volatile struct *SPI spi[2], size_t spiChannel,
+static void uart_write_register(volatile struct SPI *spi[2], size_t spiChannel,
                                 size_t uartChannel, char reg, char data) {
   char req[2] = {0};
   req[0] = (uartChannel << UART_CHANNEL_SHIFT) | (reg << UART_ADDR_SHIFT);
@@ -242,7 +242,7 @@ static void uart_write_register(volatile struct *SPI spi[2], size_t spiChannel,
   spi_send_recv(spi, spiChannel, req, 2, NULL, 0);
 }
 
-static char uart_read_register(volatile struct *SPI spi[2], size_t spiChannel,
+static char uart_read_register(volatile struct SPI *spi[2], size_t spiChannel,
                                size_t uartChannel, char reg) {
   char req[2] = {0};
   char res[2] = {0};
@@ -252,7 +252,7 @@ static char uart_read_register(volatile struct *SPI spi[2], size_t spiChannel,
   return res[1];
 }
 
-static void uart_init_channel(volatile struct *SPI spi[2], size_t spiChannel,
+static void uart_init_channel(volatile struct SPI *spi[2], size_t spiChannel,
                               size_t uartChannel, size_t baudRate) {
   // set baud rate
   uart_write_register(spi, spiChannel, uartChannel, UART_LCR,
@@ -275,34 +275,34 @@ static void uart_init_channel(volatile struct *SPI spi[2], size_t spiChannel,
     asm volatile("yield");
 }
 
-void init_uart(volatile struct *SPI spi[2], u32 spiChannel) {
+void init_uart(volatile struct SPI *spi[2], u32 spiChannel) {
   uart_write_register(spi, spiChannel, 0, UART_IOControl,
                       UART_IOControl_RESET); // resets both channels
   uart_init_channel(spi, spiChannel, 0, 115200);
   uart_init_channel(spi, spiChannel, 1, 2400);
 }
 
-char uart_tell_read(volatile struct *SPI spi[2], size_t spiChannel,
+char uart_tell_read(volatile struct SPI *spi[2], size_t spiChannel,
                     size_t uartChannel) {
   return uart_read_register(spi, spiChannel, uartChannel, UART_RXLVL);
 }
 
-char uart_tell_write(volatile struct *SPI spi[2], size_t spiChannel,
+char uart_tell_write(volatile struct SPI *spi[2], size_t spiChannel,
                      size_t uartChannel) {
   return uart_read_register(spi, spiChannel, uartChannel, UART_TXLVL);
 }
 
-char uart_read(volatile struct *SPI spi[2], size_t spiChannel,
+char uart_read(volatile struct SPI *spi[2], size_t spiChannel,
                size_t uartChannel) {
   return uart_read_register(spi, spiChannel, uartChannel, UART_RHR);
 }
 
-void uart_write(volatile struct *SPI spi[2], size_t spiChannel,
+void uart_write(volatile struct SPI *spi[2], size_t spiChannel,
                 size_t uartChannel, char c) {
   uart_write_register(spi, spiChannel, uartChannel, UART_THR, c);
 }
 
-char uart_getc(volatile struct *SPI spi[2], size_t spiChannel,
+char uart_getc(volatile struct SPI *spi[2], size_t spiChannel,
                size_t uartChannel) {
   while (uart_read_register(spi, spiChannel, uartChannel, UART_RXLVL) == 0)
     asm volatile("yield");
@@ -310,7 +310,7 @@ char uart_getc(volatile struct *SPI spi[2], size_t spiChannel,
   return result;
 }
 
-void uart_putc(volatile struct *SPI spi[2], size_t spiChannel,
+void uart_putc(volatile struct SPI *spi[2], size_t spiChannel,
                size_t uartChannel, char c) {
   while (uart_read_register(spi, spiChannel, uartChannel, UART_TXLVL) == 0)
     asm volatile("yield");
