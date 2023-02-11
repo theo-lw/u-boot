@@ -170,11 +170,6 @@
 			status = "disabled";
 		};
 
-        uart_spi: serial@fe200000 {
-            compatible = "brcm,bcm2711-spi-uart";
-			reg = <0xfe200000 0x150C0>;
-        };
-
 		spi3: spi@7e204600 {
 			compatible = "brcm,bcm2835-spi";
 			reg = <0x7e204600 0x0200>;

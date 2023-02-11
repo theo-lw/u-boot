@@ -309,6 +309,11 @@
 			arm,primecell-periphid = <0x00241011>;
 		};
 
+        uart_spi: serial@fe200000 {
+            compatible = "brcm,bcm2711-spi-uart";
+			reg = <0xfe200000 0x150C0>;
+        };
+
 		sdhost: mmc@7e202000 {
 			compatible = "brcm,bcm2835-sdhost";
 			reg = <0x7e202000 0x100>;
