@@ -5,6 +5,7 @@
 
 #define LOG_CATEGORY UCLASS_SERIAL
 
+#include "serial_bcm2711_spi.h"
 #include <common.h>
 #include <dm.h>
 #include <env_internal.h>
@@ -187,6 +188,7 @@ int serial_initialize(void)
 
 static void _serial_putc(struct udevice *dev, char ch)
 {
+	DEBUG_putc('9');
 	struct dm_serial_ops *ops = serial_get_ops(dev);
 	int err;
 
@@ -194,6 +196,7 @@ static void _serial_putc(struct udevice *dev, char ch)
 		_serial_putc(dev, '\r');
 
 	do {
+		DEBUG_putc(ch);
 		err = ops->putc(dev, ch);
 	} while (err == -EAGAIN);
 }
@@ -323,8 +326,10 @@ void serial_putc(char ch)
 
 void serial_puts(const char *str)
 {
-	if (gd->cur_serial_dev)
+	if (gd->cur_serial_dev) {
+		DEBUG_putc('8');
 		_serial_puts(gd->cur_serial_dev, str);
+	}
 }
 
 #ifdef CONFIG_CONSOLE_FLUSH_SUPPORT
