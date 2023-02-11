@@ -317,9 +317,6 @@ void uart_putc(volatile struct SPI *spi[2], size_t spiChannel,
   uart_write(spi, spiChannel, uartChannel, c);
 }
 
-static const struct udevice_id bcm2711_spi_ids[] = {
-    {.compatible = "brcm,bcm2711-spi-uart"}, {}};
-
 static int bcm2711_spi_serial_probe(struct udevice *dev) {
   struct bcm2711_spi_serial_plat *plat = dev_get_plat(dev);
   struct bcm2711_spi_priv *priv = dev_get_priv(dev);
@@ -331,8 +328,8 @@ static int bcm2711_spi_serial_probe(struct udevice *dev) {
   plat->base = addr;
   priv->gpio = (struct GPIO *)(plat->base);
   priv->aux = (struct AUX *)(plat->base + 0x15000);
-  priv->spi = {(struct SPI *)(plat->base + 0x15000 + 0x80),
-               (struct SPI *)(plat->base + 0x15000 + 0xC0)};
+  priv->spi[0] = (struct SPI *)(plat->base + 0x15000 + 0x80);
+  priv->spi[1] = (struct SPI *)(plat->base + 0x15000 + 0xC0);
   return 0;
 }
 
@@ -351,6 +348,7 @@ static int bcm2711_spi_serial_setbrg(struct udevice *dev, int) {
   init_gpio(priv->gpio);
   init_spi(priv->aux, priv->spi, 0);
   init_uart(priv->spi, 0);
+  return 0;
 }
 
 static int bcm2711_spi_serial_getc(struct udevice *dev) {
@@ -377,6 +375,9 @@ static const struct dm_serial_ops bcm2711_spi_serial_ops = {
     .getc = bcm2711_spi_serial_getc,
     .setbrg = bcm2711_spi_serial_setbrg,
 };
+
+static const struct udevice_id bcm2711_spi_serial_id[] = {
+    {.compatible = "brcm,bcm2711-spi-uart"}, {}};
 
 U_BOOT_DRIVER(serial_bcm2711_spi) = {
     .name = "serial_bcm2711_spi",
