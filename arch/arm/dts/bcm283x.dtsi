@@ -22,7 +22,7 @@
 	#size-cells = <1>;
 
 	aliases {
-		serial0 = &uart0;
+		serial0 = &uart_spi;
 		serial1 = &uart1;
 	};
 
@@ -297,16 +297,6 @@
 				brcm,pins = <42 43>;
 				brcm,function = <BCM2835_FSEL_ALT5>;
 			};
-		};
-
-		uart0: serial@7e201000 {
-			compatible = "arm,pl011", "arm,primecell";
-			reg = <0x7e201000 0x200>;
-			interrupts = <2 25>;
-			clocks = <&clocks BCM2835_CLOCK_UART>,
-				 <&clocks BCM2835_CLOCK_VPU>;
-			clock-names = "uartclk", "apb_pclk";
-			arm,primecell-periphid = <0x00241011>;
 		};
 
         uart_spi: serial@fe200000 {
