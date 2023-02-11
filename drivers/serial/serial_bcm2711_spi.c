@@ -75,7 +75,7 @@ static volatile struct GPIO *const
     gpio __section(".data") = (struct GPIO *)(GPIO_BASE);
 static volatile struct AUX *const
     aux __section(".data") = (struct AUX *)(AUX_BASE);
-static volatile struct SPI *const spi[] __section(".data") = {
+static volatile struct SPI *spi[] __section(".data") = {
     (struct SPI *)(AUX_BASE + 0x80), (struct SPI *)(AUX_BASE + 0xC0)};
 
 struct bcm2711_spi_priv {
