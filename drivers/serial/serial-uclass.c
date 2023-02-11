@@ -65,6 +65,9 @@ static int serial_check_stdout(const void *blob, struct udevice **devp)
 	 * If the console is not marked to be bound before relocation, bind it
 	 * anyway.
 	 */
+
+	log_debug("serial_check_stdout");
+
 	if (node > 0 && !lists_bind_fdt(gd->dm_root, offset_to_ofnode(node),
 					devp, NULL, false)) {
 		if (device_get_uclass_id(*devp) == UCLASS_SERIAL &&
