@@ -26,6 +26,8 @@
 #include <vsprintf.h>
 #endif	/* __ASSEMBLY__ */
 
+#define DEBUG
+
 /* Pull in stuff for the build system */
 #ifdef DO_DEPS_ONLY
 # include <env_internal.h>
