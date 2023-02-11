@@ -353,7 +353,7 @@ static int bcm2711_spi_serial_pending(struct udevice *dev, bool input) {
   }
 }
 
-void DEBUG_init() {
+void DEBUG_init(void) {
 
   init_gpio(priv->gpio);
   init_spi(priv->aux, priv->spi, 0);
