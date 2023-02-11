@@ -68,15 +68,11 @@ struct SPI {
   u32 TXHOLD_REGd; // Extended Data
 };
 
-static char *const GPIO_BASE = (char *)(MMIO_BASE + 0x200000);
-static char *const AUX_BASE = (char *)();
-static char *const TIMER_BASE = (char *)(MMIO_BASE + 0x3000);
-
 #define GPIO_BASE (0xFE000000 + 0x200000)
 #define AUX_BASE (GPIO_BASE + 0x15000)
 
 static volatile struct GPIO *const
-    gpio __section(".data") = (struct GPIO *)(GPI_BASE);
+    gpio __section(".data") = (struct GPIO *)(GPIO_BASE);
 static volatile struct AUX *const
     aux __section(".data") = (struct AUX *)(AUX_BASE);
 static volatile struct SPI *const spi[] __section(".data") = {
