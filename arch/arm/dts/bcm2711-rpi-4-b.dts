@@ -8,6 +8,9 @@
 	compatible = "raspberrypi,4-model-b", "brcm,bcm2711";
 	model = "Raspberry Pi 4 Model B";
 
+    #address-cells = <1>;
+    #size-cells = <1>;
+
 	chosen {
 		/* 8250 auxiliary UART instead of pl011 */
 		stdout-path = "uart_spi";
@@ -56,8 +59,6 @@
 	};
 
 
-    #address-cells = <1>;
-    #size-cells = <1>;
     uart_spi: serial@FE200000 {
         compatible = "brcm,bcm2711-spi-uart";
         reg = <0xFE200000 0x180C0>;
