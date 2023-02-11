@@ -285,7 +285,7 @@ static int dm_scan_fdt_node(struct udevice *parent, ofnode parent_node,
 			pr_debug("   - ignoring disabled device\n");
 			continue;
 		}
-		log_debug("dm_scan_fdt_node");
+		log_debug("dm_scan_fdt_node %d\n", pre_reloc_only);
 		err = lists_bind_fdt(parent, node, NULL, NULL, pre_reloc_only);
 		if (err && !ret) {
 			ret = err;
