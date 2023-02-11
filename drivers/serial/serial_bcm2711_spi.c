@@ -352,6 +352,25 @@ static int bcm2711_spi_serial_setbrg(struct udevice *dev, int) {
   init_spi(priv->aux, priv->spi, 0);
   init_uart(priv->spi, 0);
 }
+
+static int bcm2711_spi_serial_getc(struct udevice *dev) {
+  struct bcm2711_spi_priv *priv = dev_get_priv(dev);
+  u32 data;
+
+  /* Wait until there is data in the FIFO */
+  data = uart_getc(priv->spi, 0, 0);
+
+  return (int)data;
+}
+
+static int bcm2711_spi_serial_putc(struct udevice *dev, const char data) {
+  struct bcm2711_spi_priv *priv = dev_get_priv(dev);
+
+  uart_putc(priv->spi, 0, 0, data);
+
+  return 0;
+}
+
 static const struct dm_serial_ops bcm2711_spi_serial_ops = {
     .putc = bcm2711_spi_serial_putc,
     .pending = bcm2711_spi_serial_pending,
