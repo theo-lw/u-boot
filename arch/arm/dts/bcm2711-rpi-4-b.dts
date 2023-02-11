@@ -55,10 +55,6 @@
 		gpio = <&expgpio 6 GPIO_ACTIVE_HIGH>;
 	};
 
-
-    uart_spi: serial@FE200000 {
-        compatible = "brcm,bcm2711-spi-uart";
-    };
 };
 
 &ddc0 {
