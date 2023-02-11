@@ -71,7 +71,7 @@ struct SPI {
 struct bcm2711_spi_priv {
   volatile struct GPIO *gpio;
   volatile struct AUX *aux;
-  volatile struct spi *spi[2];
+  volatile struct SPI *spi[2];
 };
 
 /*************** GPIO ***************/
@@ -320,7 +320,7 @@ void uart_putc(volatile struct SPI *spi[2], size_t spiChannel,
 static const struct udevice_id bcm2711_spi_ids[] = {
     {.compatible = "brcm,bcm2711-spi-uart"}, {}};
 
-static int bcm2711_spi_serial_probe(struct udevice *bus) {
+static int bcm2711_spi_serial_probe(struct udevice *dev) {
   struct bcm2711_spi_serial_plat *plat = dev_get_plat(dev);
   struct bcm2711_spi_priv *priv = dev_get_priv(dev);
   fdt_addr_t addr;
