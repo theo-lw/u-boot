@@ -353,13 +353,6 @@ static int bcm2711_spi_serial_pending(struct udevice *dev, bool input) {
   }
 }
 
-void DEBUG_init(void) {
-
-  init_gpio(priv->gpio);
-  init_spi(priv->aux, priv->spi, 0);
-  init_uart(priv->spi, 0);
-}
-
 static int bcm2711_spi_serial_setbrg(struct udevice *dev, int) {
   struct bcm2711_spi_priv *priv = dev_get_priv(dev);
   init_gpio(priv->gpio);
@@ -368,11 +361,10 @@ static int bcm2711_spi_serial_setbrg(struct udevice *dev, int) {
   return 0;
 }
 
-void DEBUG_init() {
+void DEBUG_init(void) {
   init_gpio(gpio);
   init_spi(aux, spi, 0);
   init_uart(spi, 0);
-  return 0;
 }
 
 void DEBUG_putc(char ch) { uart_putc(spi, 0, 0, ch); }
