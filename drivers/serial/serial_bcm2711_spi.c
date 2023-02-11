@@ -409,3 +409,17 @@ U_BOOT_DRIVER(serial_bcm2711_spi) = {
 #endif
     .priv_auto = sizeof(struct bcm2711_spi_priv),
 };
+
+#ifdef CONFIG_DEBUG_UART_BCM2711
+#include <debug_uart.h>
+
+static inline void _debug_uart_init(void) {
+  DEBUG_init();
+}
+
+static inline void _debug_uart_putc(int c) {
+  DEBUG_putc(c);
+}
+
+DEBUG_UART_FUNCS
+#endif
