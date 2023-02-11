@@ -56,9 +56,9 @@
 	};
 
 
-    uart_spi: serial@7e215040 {
+    uart_spi: serial@FE200000 {
         compatible = "brcm,bcm2711-spi-uart";
-        reg = <0xFE000000 0x200000>;
+        reg = <0xFE200000 0x180C0>;
     };
 };
 
