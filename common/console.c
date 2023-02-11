@@ -729,7 +729,6 @@ void putc(const char c)
 void puts(const char *s)
 {
 	if (!gd) {
-		DEBUG_putc('!');
 		return;
 	}
 
@@ -737,7 +736,6 @@ void puts(const char *s)
 
 	/* sandbox can send characters to stdout before it has a console */
 	if (IS_ENABLED(CONFIG_SANDBOX) && !(gd->flags & GD_FLG_SERIAL_READY)) {
-          DEBUG_putc('1');
           os_puts(s);
           return;
 	}
@@ -752,28 +750,23 @@ void puts(const char *s)
 	}
 
 	if (IS_ENABLED(CONFIG_SILENT_CONSOLE) && (gd->flags & GD_FLG_SILENT)) {
-          DEBUG_putc('3');
           if (!(gd->flags & GD_FLG_DEVINIT))
             pre_console_puts(s);
           return;
 	}
 
 	if (IS_ENABLED(CONFIG_DISABLE_CONSOLE) && (gd->flags & GD_FLG_DISABLE_CONSOLE)) {
-          DEBUG_putc('4');
           return;
         }
 
 	if (!gd->have_console) {
-          DEBUG_putc('5');
           return pre_console_puts(s);
 	}
 
 	if (gd->flags & GD_FLG_DEVINIT) {
-          DEBUG_putc('6');
           /* Send to the standard output */
           fputs(stdout, s);
 	} else {
-          DEBUG_putc('7');
           /* Send directly to the handler */
           pre_console_puts(s);
           serial_puts(s);

@@ -188,7 +188,6 @@ int serial_initialize(void)
 
 static void _serial_putc(struct udevice *dev, char ch)
 {
-	DEBUG_putc('9');
 	struct dm_serial_ops *ops = serial_get_ops(dev);
 	int err;
 
@@ -326,7 +325,6 @@ void serial_putc(char ch)
 void serial_puts(const char *str)
 {
 	if (gd->cur_serial_dev) {
-		DEBUG_putc('8');
 		_serial_puts(gd->cur_serial_dev, str);
 	}
 }
