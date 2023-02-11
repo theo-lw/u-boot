@@ -68,6 +68,20 @@ struct SPI {
   u32 TXHOLD_REGd; // Extended Data
 };
 
+static char *const GPIO_BASE = (char *)(MMIO_BASE + 0x200000);
+static char *const AUX_BASE = (char *)();
+static char *const TIMER_BASE = (char *)(MMIO_BASE + 0x3000);
+
+#define GPIO_BASE (0xFE000000 + 0x200000)
+#define AUX_BASE (GPIO_BASE + 0x15000)
+
+static volatile struct GPIO *const
+    gpio __section(".data") = (struct GPIO *)(GPI_BASE);
+static volatile struct AUX *const
+    aux __section(".data") = (struct AUX *)(AUX_BASE);
+static volatile struct SPI *const spi[] __section(".data") = {
+    (struct SPI *)(AUX_BASE + 0x80), (struct SPI *)(AUX_BASE + 0xC0)};
+
 struct bcm2711_spi_priv {
   volatile struct GPIO *gpio;
   volatile struct AUX *aux;
@@ -343,6 +357,13 @@ static int bcm2711_spi_serial_pending(struct udevice *dev, bool input) {
   }
 }
 
+void DEBUG_init() {
+
+  init_gpio(priv->gpio);
+  init_spi(priv->aux, priv->spi, 0);
+  init_uart(priv->spi, 0);
+}
+
 static int bcm2711_spi_serial_setbrg(struct udevice *dev, int) {
   struct bcm2711_spi_priv *priv = dev_get_priv(dev);
   init_gpio(priv->gpio);
@@ -350,6 +371,15 @@ static int bcm2711_spi_serial_setbrg(struct udevice *dev, int) {
   init_uart(priv->spi, 0);
   return 0;
 }
+
+void DEBUG_init() {
+  init_gpio(gpio);
+  init_spi(aux, spi, 0);
+  init_uart(spi, 0);
+  return 0;
+}
+
+void DEBUG_putc(char ch) { uart_putc(spi, 0, 0, ch); }
 
 static int bcm2711_spi_serial_getc(struct udevice *dev) {
   struct bcm2711_spi_priv *priv = dev_get_priv(dev);

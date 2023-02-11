@@ -9,6 +9,8 @@
  * Marius Groeger <mgroeger@sysgo.de>
  */
 
+#include "../drivers/serial/serial_bcm2711_spi.h"
+
 #include <common.h>
 #include <bloblist.h>
 #include <bootstage.h>
@@ -975,6 +977,8 @@ static const init_fnc_t init_sequence_f[] = {
 
 void board_init_f(ulong boot_flags)
 {
+  DEBUG_init();
+  DEBUG_putc('L');
 	gd->flags = boot_flags;
 	gd->have_console = 0;
 
