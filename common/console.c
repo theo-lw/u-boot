@@ -743,7 +743,6 @@ void puts(const char *s)
 	}
 
 	if (IS_ENABLED(CONFIG_DEBUG_UART) && !(gd->flags & GD_FLG_SERIAL_READY)) {
-          DEBUG_putc('2');
           while (*s) {
             int ch = *s++;
 
