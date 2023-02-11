@@ -262,6 +262,14 @@ config DEBUG_UART_ATMEL
 	  will need to provide parameters to make this work. The driver will
 	  be available until the real driver-model serial is running.
 
+config DEBUG_UART_BCM2711
+	bool "BCM2711 UART"
+	depends on BCM2711_SPI_SERIAL
+	help
+	  Select this to enable a debug UART on BCM6345 SoCs. You
+	  will need to provide parameters to make this work. The driver will
+	  be available until the real driver model serial is running.
+
 config DEBUG_UART_BCM6345
 	bool "BCM6345 UART"
 	depends on BCM6345_SERIAL
