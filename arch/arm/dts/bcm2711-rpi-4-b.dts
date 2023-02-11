@@ -10,7 +10,7 @@
 
 	chosen {
 		/* 8250 auxiliary UART instead of pl011 */
-		stdout-path = "serial1:115200n8";
+		stdout-path = "uart_spi";
 	};
 
 	leds {
@@ -54,6 +54,12 @@
 		enable-active-high;
 		gpio = <&expgpio 6 GPIO_ACTIVE_HIGH>;
 	};
+
+
+    uart_spi: serial@7e215040 {
+        compatible = "brcm,bcm2711-spi-uart";
+        reg = <0xFE000000 0x200000>;
+    };
 };
 
 &ddc0 {

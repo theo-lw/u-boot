@@ -9,6 +9,8 @@ else
 obj-y += serial.o
 endif
 
+obj-$(CONFIG_BCM2711_SPI_SERIAL) += serial_bcm2711_spi.o
+
 obj-$(CONFIG_PL01X_SERIAL) += serial_pl01x.o
 obj-$(CONFIG_PL011_SERIAL) += serial_pl01x.o
 obj-$(CONFIG_$(SPL_)SYS_NS16550_SERIAL) += serial_ns16550.o
