@@ -1,6 +1,7 @@
+#include <common.h>
+
 #include <asm/gpio.h>
 #include <asm/io.h>
-#include <common.h>
 #include <dm.h>
 #include <dm/pinctrl.h>
 #include <dm/platform_data/serial_bcm2711_spi.h>
