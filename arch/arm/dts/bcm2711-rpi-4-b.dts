@@ -10,7 +10,7 @@
 
 	chosen {
 		/* 8250 auxiliary UART instead of pl011 */
-		stdout-path = "uart_spi:115200n8";
+		stdout-path = "serial0:115200n8";
 	};
 
 	leds {

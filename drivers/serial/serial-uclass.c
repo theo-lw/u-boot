@@ -67,6 +67,8 @@ static int serial_check_stdout(const void *blob, struct udevice **devp)
 	if (!uclass_get_device_by_of_offset(UCLASS_SERIAL, node, devp))
 		return 0;
 
+	log_debug("node: %d\r\n", node);
+
 	/*
 	 * If the console is not marked to be bound before relocation, bind it
 	 * anyway.

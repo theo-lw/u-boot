@@ -22,7 +22,7 @@
 	#size-cells = <1>;
 
 	aliases {
-		serial0 = &uart0;
+		serial0 = &uart_spi;
 		serial1 = &uart1;
 	};
 
