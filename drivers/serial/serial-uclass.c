@@ -196,7 +196,6 @@ static void _serial_putc(struct udevice *dev, char ch)
 		_serial_putc(dev, '\r');
 
 	do {
-		DEBUG_putc(ch);
 		err = ops->putc(dev, ch);
 	} while (err == -EAGAIN);
 }
