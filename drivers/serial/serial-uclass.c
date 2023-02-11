@@ -37,6 +37,7 @@ static int serial_check_stdout(const void *blob, struct udevice **devp)
 
 	/* Check for a chosen console */
 	str = fdtdec_get_chosen_prop(blob, "stdout-path");
+	log_debug("stdout-path: %s\r\n", str);
 	if (str) {
 		p = strchr(str, ':');
 		namelen = p ? p - str : strlen(str);
@@ -66,7 +67,7 @@ static int serial_check_stdout(const void *blob, struct udevice **devp)
 	 * anyway.
 	 */
 
-	log_debug("serial_check_stdout");
+	log_debug("serial_check_stdout\r\n");
 
 	if (node > 0 && !lists_bind_fdt(gd->dm_root, offset_to_ofnode(node),
 					devp, NULL, false)) {
