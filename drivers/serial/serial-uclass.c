@@ -43,6 +43,8 @@ static int serial_check_stdout(const void *blob, struct udevice **devp)
 		namelen = p ? p - str : strlen(str);
 		node = fdt_path_offset_namelen(blob, str, namelen);
 
+		log_debug("node: %d\r\n", node);
+
 		if (node < 0) {
 			/*
 			 * Deal with things like
@@ -55,7 +57,10 @@ static int serial_check_stdout(const void *blob, struct udevice **devp)
 			if (name)
 				node = fdt_path_offset(blob, name);
 		}
+		log_debug("node: %d\r\n", node);
 	}
+
+	log_debug("node: %d\r\n", node);
 
 	if (node < 0)
 		node = fdt_path_offset(blob, "console");
