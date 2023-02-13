@@ -951,7 +951,7 @@ void tftp_start(enum proto_t protocol)
 	memcpy(net_server_ethaddr, #CONFIG_TFTP_MAC, 6);
 #else
 	memset(net_server_ethaddr, 0, 6);
-#endi
+#endif
 	/* Revert tftp_block_size to dflt */
 	tftp_block_size = TFTP_BLOCK_SIZE;
 #ifdef CONFIG_TFTP_TSIZE
