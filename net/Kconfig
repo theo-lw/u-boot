@@ -130,6 +130,15 @@ config TFTP_TSIZE
 	  size from server, and if supported, limits the progress bar to
 	  50 characters total which fits on single line.
 
+config USE_TFTP_MAC
+    bool "Use a hardcoded MAC address for the TFTP Server"
+    help
+       Mainly used because nothing responds to the ARP requests??
+
+config TFTP_MAC
+    string "hardcoded MAC address of TFTP server"
+	depends on USE_TFTP_MAC
+
 config SERVERIP_FROM_PROXYDHCP
 	bool "Get serverip value from Proxy DHCP response"
 	help
