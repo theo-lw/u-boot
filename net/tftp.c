@@ -947,7 +947,11 @@ void tftp_start(enum proto_t protocol)
 	tftp_windowsize = 1;
 	tftp_last_nack = 0;
 	/* zero out server ether in case the server ip has changed */
+#ifdef CONFIG_TFTP_MAC
+	memcpy(net_server_ethaddr, #CONFIG_TFTP_MAC, 6);
+#else
 	memset(net_server_ethaddr, 0, 6);
+#endi
 	/* Revert tftp_block_size to dflt */
 	tftp_block_size = TFTP_BLOCK_SIZE;
 #ifdef CONFIG_TFTP_TSIZE
