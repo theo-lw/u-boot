@@ -80,6 +80,7 @@
  *	Next step:	none
  */
 
+#define DEBUG
 
 #include <common.h>
 #include <bootstage.h>

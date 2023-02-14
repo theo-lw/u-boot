@@ -5,6 +5,9 @@
  * Copyright 2011 Comelit Group SpA,
  *                Luca Ceresoli <luca.ceresoli@comelit.it>
  */
+
+#define DEBUG
+
 #include <common.h>
 #include <command.h>
 #include <display_options.h>
