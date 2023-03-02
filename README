@@ -25,6 +25,8 @@ tftpboot ${loadaddr} 10.15.167.5:RPi/CS015743/kernel8.img
 bootelf ${loadaddr}
 go 0x80000
 
+The tftpboot command refuses to work sometimes. In those cases I just restart the Pi.
+
 Summary:
 ========
 
