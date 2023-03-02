@@ -7,6 +7,8 @@
  * Alexander Graf <agraf@suse.de>
  */
 
+#define LOG_DEBUG
+
 #include <common.h>
 #include <cpu_func.h>
 #include <hang.h>
