@@ -437,6 +437,7 @@ __weak void mmu_setup(void)
 		setup_all_pgtables();
 
 	el = current_el();
+	debug("enabling mmu for el %d\n", el);
 	set_ttbr_tcr_mair(el, gd->arch.tlb_addr, get_tcr(NULL, NULL),
 			  MEMORY_ATTRIBUTES);
 
@@ -514,6 +515,8 @@ void dcache_enable(void)
 
 void dcache_disable(void)
 {
+	debug("disabling dcache\n");
+
 	uint32_t sctlr;
 
 	sctlr = get_sctlr();
