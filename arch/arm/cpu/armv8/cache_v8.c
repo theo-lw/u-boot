@@ -430,16 +430,15 @@ static void setup_all_pgtables(void)
 /* to activate the MMU we need to set up virtual memory */
 __weak void mmu_setup(void)
 {
-	int el;
-
 	/* Set up page tables only once */
 	if (!gd->arch.tlb_fillptr)
 		setup_all_pgtables();
 
-	el = current_el();
-	debug("enabling mmu for el %d\n", el);
-	set_ttbr_tcr_mair(el, gd->arch.tlb_addr, get_tcr(NULL, NULL),
-			  MEMORY_ATTRIBUTES);
+	for (int el = 1; el <= 3; ++el) {
+		debug("enabling mmu for el %d\n", el);
+		set_ttbr_tcr_mair(el, gd->arch.tlb_addr, get_tcr(NULL, NULL),
+						MEMORY_ATTRIBUTES);
+	}
 
 	/* enable the mmu */
 	set_sctlr(get_sctlr() | CR_M);
