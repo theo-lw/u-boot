@@ -23,7 +23,7 @@ setenv ipaddr 10.15.79.15n
 
 Upload the kernel.elf to the TFTP server and boot it with the following.
 
-tftpboot ${loadaddr} 10.15.167.5:RPi/CS01574n/kernel8.img
+tftpboot ${loadaddr} 10.15.167.5:RPi/CS01754n/kernel8.img
 bootelf ${loadaddr}
 go 0x80000
 
