@@ -17,11 +17,13 @@ Upload to the TFTP server with by running the following command:
 
 Then on the terminal stop the autoboot by pressing any key within 3 seconds.
 
-Enter the following commands on the u-boot terminal, replacing 10.15.79.15n with the IP address of the particular Raspberry Pi board. 
-For instance, board 3 should have the IP address 10.15.79.153.
+Set the IP Address on the terminal with the following command, replacing 10.15.79.15n with the IP address of the particular Raspberry Pi board. For instance, board 3 should have the IP address 10.15.79.153.
 
 setenv ipaddr 10.15.79.15n
-tftpboot ${loadaddr} 10.15.167.5:RPi/CS015743/kernel8.img
+
+Upload the kernel.elf to the TFTP server and boot it with the following.
+
+tftpboot ${loadaddr} 10.15.167.5:RPi/CS01574n/kernel8.img
 bootelf ${loadaddr}
 go 0x80000
 
