@@ -42,31 +42,29 @@ static struct mm_region bcm283x_mem_map[MEM_MAP_MAX_ENTRIES] = {
 };
 
 static struct mm_region bcm2711_mem_map[MEM_MAP_MAX_ENTRIES] = {
-	{
-		.virt = 0x00000000UL,
-		.phys = 0x00000000UL,
-		.size = 0xfc000000UL,
-		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
-			 PTE_BLOCK_INNER_SHARE
-	}, {
-		.virt = 0xfc000000UL,
-		.phys = 0xfc000000UL,
-		.size = 0x03800000UL,
-		.attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) |
-			 PTE_BLOCK_NON_SHARE |
-			 PTE_BLOCK_PXN | PTE_BLOCK_UXN
-	}, {
-		.virt = BCM2711_RPI4_PCIE_XHCI_MMIO_PHYS,
-		.phys = BCM2711_RPI4_PCIE_XHCI_MMIO_PHYS,
-		.size = BCM2711_RPI4_PCIE_XHCI_MMIO_SIZE,
-		.attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) |
-			 PTE_BLOCK_NON_SHARE |
-			 PTE_BLOCK_PXN | PTE_BLOCK_UXN
-	}, {
-		/* List terminator */
-		0,
-	}
-};
+    {.virt = 0x00000000UL,
+     .phys = 0x00000000UL,
+     .size = 0x1000000UL,
+     .attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) | PTE_BLOCK_INNER_SHARE},
+    {.virt = 0x1000000UL,
+     .phys = 0x1000000UL,
+     .size = 0xfbf00000UL,
+     .attrs =
+         PTE_BLOCK_MEMTYPE(MT_NORMAL) | PTE_BLOCK_INNER_SHARE | PTE_BLOCK_RW},
+    {.virt = 0xfc000000UL,
+     .phys = 0xfc000000UL,
+     .size = 0x03800000UL,
+     .attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) | PTE_BLOCK_NON_SHARE |
+              PTE_BLOCK_PXN | PTE_BLOCK_UXN | PTE_BLOCK_RW},
+    {.virt = BCM2711_RPI4_PCIE_XHCI_MMIO_PHYS,
+     .phys = BCM2711_RPI4_PCIE_XHCI_MMIO_PHYS,
+     .size = BCM2711_RPI4_PCIE_XHCI_MMIO_SIZE,
+     .attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) | PTE_BLOCK_NON_SHARE |
+              PTE_BLOCK_PXN | PTE_BLOCK_UXN},
+    {
+        /* List terminator */
+        0,
+    }};
 
 struct mm_region *mem_map = bcm283x_mem_map;
 
