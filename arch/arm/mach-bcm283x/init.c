@@ -19,7 +19,7 @@
 #ifdef CONFIG_ARM64
 #include <asm/armv8/mmu.h>
 
-#define MEM_MAP_MAX_ENTRIES (4)
+#define MEM_MAP_MAX_ENTRIES (5)
 
 static struct mm_region bcm283x_mem_map[MEM_MAP_MAX_ENTRIES] = {
 	{
