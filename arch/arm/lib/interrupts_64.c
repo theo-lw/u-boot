@@ -168,7 +168,8 @@ void do_sync(struct pt_regs *pt_regs)
 	printf("\"Synchronous Abort\" handler, esr 0x%08lx\n", pt_regs->esr);
 	show_regs(pt_regs);
 	show_efi_loaded_images(pt_regs);
-	panic("Resetting CPU ...\n");
+	// panic("Resetting CPU ...\n");
+	return;
 }
 
 /*
