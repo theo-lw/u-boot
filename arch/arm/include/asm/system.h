@@ -114,12 +114,12 @@
 #define SCTLR_EL1_UCI_DIS	(0 << 26) /* Cache instruction disabled       */
 #define SCTLR_EL1_EE_LE		(0 << 25) /* Exception Little-endian          */
 #define SCTLR_EL1_WXN_DIS	(0 << 19) /* Write permission is not XN       */
-#define SCTLR_EL1_NTWE_DIS	(0 << 18) /* WFE instruction disabled         */
-#define SCTLR_EL1_NTWI_DIS	(0 << 16) /* WFI instruction disabled         */
+#define SCTLR_EL1_NTWE_EN	(1 << 18) /* WFE instruction disabled         */
+#define SCTLR_EL1_NTWI_EN	(1 << 16) /* WFI instruction disabled         */
 #define SCTLR_EL1_UCT_DIS	(0 << 15) /* CTR_EL0 access disabled          */
 #define SCTLR_EL1_DZE_DIS	(0 << 14) /* DC ZVA instruction disabled      */
 #define SCTLR_EL1_ICACHE_DIS	(0 << 12) /* Instruction cache disabled       */
-#define SCTLR_EL1_UMA_DIS	(0 << 9)  /* User Mask Access disabled        */
+#define SCTLR_EL1_UMA_EN	(1 << 9)  /* User Mask Access disabled        */
 #define SCTLR_EL1_SED_EN	(0 << 8)  /* SETEND instruction enabled       */
 #define SCTLR_EL1_ITD_EN	(0 << 7)  /* IT instruction enabled           */
 #define SCTLR_EL1_CP15BEN_DIS	(0 << 5)  /* CP15 barrier operation disabled  */
