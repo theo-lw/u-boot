@@ -144,7 +144,7 @@ _restore_regs:
 	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_sync
-	b	exception_exit
+    b   _return_to_uboot
 
 	.align	7		 /* Current EL (SP_ELx) IRQ Handler */
 	stp	x29, x30, [sp, #-16]!
@@ -163,3 +163,14 @@ _restore_regs:
 	bl	_exception_entry
 	bl	do_error
 	b	exception_exit
+
+_return_to_uboot:
+	ldp	xzr, x0, [sp],#16
+    add     sp, sp, #144
+	ldp	x19, x20, [sp],#16
+	ldp	x21, x22, [sp],#16
+	ldp	x23, x24, [sp],#16
+	ldp	x25, x26, [sp],#16
+	ldp	x27, x28, [sp],#16
+	ldp	x29, x30, [sp],#16
+    ret

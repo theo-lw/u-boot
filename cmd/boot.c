@@ -38,10 +38,15 @@ static int do_go(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 	 * pass address parameter as argv[0] (aka command name),
 	 * and all remaining args
 	 */
+#ifdef CONFIG_ARMV8_SWITCH_TO_EL1
+	armv8_switch_to_el1(0, 0, 0, 0, addr, ES_TO_AARCH64);
+#else
 	rc = do_go_exec ((void *)addr, argc - 1, argv + 1);
 	if (rc != 0) rcode = 1;
 
 	printf ("## Application terminated, rc = 0x%lX\n", rc);
+#endif
+
 	return rcode;
 }
 

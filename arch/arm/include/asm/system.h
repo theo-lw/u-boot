@@ -256,7 +256,7 @@ void __noreturn armv8_switch_to_el2(u64 args, u64 mach_nr, u64 fdt_addr,
  * @entry_point: kernel entry point
  * @es_flag:     execution state flag, ES_TO_AARCH64 or ES_TO_AARCH32
  */
-void armv8_switch_to_el1(u64 args, u64 mach_nr, u64 fdt_addr,
+int armv8_switch_to_el1(u64 args, u64 mach_nr, u64 fdt_addr,
 			 u64 arg4, u64 entry_point, u64 es_flag);
 void armv8_el2_to_aarch32(u64 args, u64 mach_nr, u64 fdt_addr,
 			  u64 arg4, u64 entry_point);
