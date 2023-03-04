@@ -243,13 +243,13 @@ lr	.req	x30
  */
 .macro armv8_switch_to_el1_m, ep, flag, tmp, tmp2
     // otherwise, switch to EL1 by fake exception to return from
-    ldr tmp, =HCR_RW
-    msr hcr_el2, tmp
+    ldr \tmp, =HCR_RW
+    msr hcr_el2, \tmp
 
-    ldr tmp, =SPSR_VALUE
-    msr spsr_el2, tmp
+    ldr \tmp, =SPSR_VALUE
+    msr spsr_el2, \tmp
 
-    msr elr_el2, ep
+    msr elr_el2, \ep
 
     eret // -> el1_entry
 .endm
