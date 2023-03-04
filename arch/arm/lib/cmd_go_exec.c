@@ -24,5 +24,5 @@
 
 unsigned long do_go_exec(ulong (*entry)(int, char *const[]), int argc,
                          char *const argv[]) {
-  return armv8_switch_to_el1(argc, argv, 0, 0, entry, ES_TO_AARCH64);
+  return armv8_switch_to_el1(argc, (u64) argv, 0, 0, (u64) entry, ES_TO_AARCH64);
 }
