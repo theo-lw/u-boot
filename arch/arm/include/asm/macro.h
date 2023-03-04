@@ -296,7 +296,7 @@ lr	.req	x30
 	ldr	\tmp2, =(ID_AA64ISAR1_EL1_GPI | ID_AA64ISAR1_EL1_GPA | \
 		      ID_AA64ISAR1_EL1_API | ID_AA64ISAR1_EL1_APA)
 	tst	\tmp, \tmp2
-	mov	\tmp2, #(HCR_EL2_RW_AARCH64 | HCR_EL2_HCD_DIS)
+	mov	\tmp2, #(HCR_EL2_RW_AARCH64)
 	orr	\tmp, \tmp2, #(HCR_EL2_APK | HCR_EL2_API)
 	csel	\tmp, \tmp2, \tmp, eq
 	msr	hcr_el2, \tmp
