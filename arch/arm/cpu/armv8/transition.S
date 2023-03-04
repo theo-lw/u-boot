@@ -34,6 +34,13 @@ ENDPROC(armv8_switch_to_el2)
 
 .pushsection .text.armv8_switch_to_el1, "ax"
 ENTRY(armv8_switch_to_el1)
+	stp	x29, x30, [sp, #-16]!
+	stp	x27, x28, [sp, #-16]!
+	stp	x25, x26, [sp, #-16]!
+	stp	x23, x24, [sp, #-16]!
+	stp	x21, x22, [sp, #-16]!
+	stp	x19, x20, [sp, #-16]!
+
 	switch_el x6, 0f, 1f, 0f
 0:
 	/* x4 is kernel entry point. When running in EL1

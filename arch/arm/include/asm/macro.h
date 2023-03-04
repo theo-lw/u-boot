@@ -242,86 +242,16 @@ lr	.req	x30
  * They will be passed to the guest.
  */
 .macro armv8_switch_to_el1_m, ep, flag, tmp, tmp2
-	/* Initialize Generic Timers */
-	mrs	\tmp, cnthctl_el2
-	/* Enable EL1 access to timers */
-	orr	\tmp, \tmp, #(CNTHCTL_EL2_EL1PCEN_EN |\
-		CNTHCTL_EL2_EL1PCTEN_EN)
-	msr	cnthctl_el2, \tmp
-	msr	cntvoff_el2, xzr
+    // otherwise, switch to EL1 by fake exception to return from
+    ldr \tmp, =HCR_RW
+    msr hcr_el2, \tmp
 
-	/* Initilize MPID/MPIDR registers */
-	mrs	\tmp, midr_el1
-	msr	vpidr_el2, \tmp
-	mrs	\tmp, mpidr_el1
-	msr	vmpidr_el2, \tmp
+    ldr \tmp, =SPSR_VALUE
+    msr spsr_el2, \tmp
 
-	/* Disable coprocessor traps */
-	mov	\tmp, #CPTR_EL2_RES1
-	msr	cptr_el2, \tmp		/* Disable coprocessor traps to EL2 */
-	msr	hstr_el2, xzr		/* Disable coprocessor traps to EL2 */
-	mov	\tmp, #CPACR_EL1_FPEN_EN
-	msr	cpacr_el1, \tmp		/* Enable FP/SIMD at EL1 */
+    msr elr_el2, \ep
 
-	/* SCTLR_EL1 initialization
-	 *
-	 * setting RES1 bits (29,28,23,22,20,11) to 1
-	 * and RES0 bits (31,30,27,21,17,13,10,6) +
-	 * UCI,EE,EOE,WXN,nTWE,nTWI,UCT,DZE,I,UMA,SED,ITD,
-	 * CP15BEN,SA0,SA,C,A,M to 0
-	 */
-	ldr	\tmp, =(SCTLR_EL1_RES1 | SCTLR_EL1_UCI_DIS |\
-			SCTLR_EL1_EE_LE | SCTLR_EL1_WXN_DIS |\
-			SCTLR_EL1_NTWE_DIS | SCTLR_EL1_NTWI_DIS |\
-			SCTLR_EL1_UCT_DIS | SCTLR_EL1_DZE_DIS |\
-			SCTLR_EL1_ICACHE_DIS | SCTLR_EL1_UMA_DIS |\
-			SCTLR_EL1_SED_EN | SCTLR_EL1_ITD_EN |\
-			SCTLR_EL1_CP15BEN_DIS | SCTLR_EL1_SA0_DIS |\
-			SCTLR_EL1_SA_DIS | SCTLR_EL1_DCACHE_DIS |\
-			SCTLR_EL1_ALIGN_DIS | SCTLR_EL1_MMU_DIS)
-	msr	sctlr_el1, \tmp
-
-	mov	\tmp, sp
-	msr	sp_el1, \tmp		/* Migrate SP */
-	mrs	\tmp, vbar_el2
-	msr	vbar_el1, \tmp		/* Migrate VBAR */
-
-	/* Check switch to AArch64 EL1 or AArch32 Supervisor mode */
-	cmp	\flag, #ES_TO_AARCH32
-	b.eq	1f
-
-	/* Initialize HCR_EL2 */
-	/* Only disable PAuth traps if PAuth is supported */
-	mrs	\tmp, id_aa64isar1_el1
-	ldr	\tmp2, =(ID_AA64ISAR1_EL1_GPI | ID_AA64ISAR1_EL1_GPA | \
-		      ID_AA64ISAR1_EL1_API | ID_AA64ISAR1_EL1_APA)
-	tst	\tmp, \tmp2
-	mov	\tmp2, #(HCR_EL2_RW_AARCH64 | HCR_EL2_HCD_DIS)
-	orr	\tmp, \tmp2, #(HCR_EL2_APK | HCR_EL2_API)
-	csel	\tmp, \tmp2, \tmp, eq
-	msr	hcr_el2, \tmp
-
-	/* Return to the EL1_SP1 mode from EL2 */
-	ldr	\tmp, =(SPSR_EL_DEBUG_MASK | SPSR_EL_SERR_MASK |\
-			SPSR_EL_IRQ_MASK | SPSR_EL_FIQ_MASK |\
-			SPSR_EL_M_AARCH64 | SPSR_EL_M_EL1H)
-	msr	spsr_el2, \tmp
-	msr     elr_el2, \ep
-	eret
-
-1:
-	/* Initialize HCR_EL2 */
-	ldr	\tmp, =(HCR_EL2_RW_AARCH32 | HCR_EL2_HCD_DIS)
-	msr	hcr_el2, \tmp
-
-	/* Return to AArch32 Supervisor mode from EL2 */
-	ldr	\tmp, =(SPSR_EL_END_LE | SPSR_EL_ASYN_MASK |\
-			SPSR_EL_IRQ_MASK | SPSR_EL_FIQ_MASK |\
-			SPSR_EL_T_A32 | SPSR_EL_M_AARCH32 |\
-			SPSR_EL_M_SVC)
-	msr     spsr_el2, \tmp
-	msr     elr_el2, \ep
-	eret
+    eret // -> el1_entry
 .endm
 
 #if defined(CONFIG_GICV3)

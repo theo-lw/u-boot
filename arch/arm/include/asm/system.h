@@ -20,6 +20,30 @@
 #define ES_TO_AARCH64		1
 #define ES_TO_AARCH32		0
 
+// ***************************************
+// SCTLR_EL1, System Control Register (EL1)
+// Architecture Reference Manual Section D13.2.118
+// ***************************************
+#define SCTLR_RESERVED (3 << 28) | (3 << 22) | (1 << 20) | (1 << 11)
+#define USER_MASK_ACCESS (1 << 9)
+#define SCTLR_WFE_WFI_ENABLED (1 << 18 | 1 << 16)
+#define SCTLR_VALUE_MMU_DISABLED                                               \
+  (SCTLR_RESERVED | USER_MASK_ACCESS | SCTLR_WFE_WFI_ENABLED)
+
+// ***************************************
+// HCR_EL2, Hypervisor Configuration Register (EL2)
+// Architecture Reference Manual Section D13.2.48
+// ***************************************
+#define HCR_RW (1 << 31)
+
+// ***************************************
+// SPSR_EL3, Saved Program Status Register (EL3)
+// Architecture Reference Manual Section C5.2.20
+// ***************************************
+#define SPSR_MASK_ALL (7 << 6)
+#define SPSR_EL1h (5 << 0)
+#define SPSR_VALUE (SPSR_MASK_ALL | SPSR_EL1h)
+
 /*
  * SCR_EL3 bits definitions
  */
@@ -114,12 +138,12 @@
 #define SCTLR_EL1_UCI_DIS	(0 << 26) /* Cache instruction disabled       */
 #define SCTLR_EL1_EE_LE		(0 << 25) /* Exception Little-endian          */
 #define SCTLR_EL1_WXN_DIS	(0 << 19) /* Write permission is not XN       */
-#define SCTLR_EL1_NTWE_DIS	(0 << 18) /* WFE instruction disabled         */
-#define SCTLR_EL1_NTWI_DIS	(0 << 16) /* WFI instruction disabled         */
+#define SCTLR_EL1_NTWE_EN	(1 << 18) /* WFE instruction disabled         */
+#define SCTLR_EL1_NTWI_EN	(1 << 16) /* WFI instruction disabled         */
 #define SCTLR_EL1_UCT_DIS	(0 << 15) /* CTR_EL0 access disabled          */
 #define SCTLR_EL1_DZE_DIS	(0 << 14) /* DC ZVA instruction disabled      */
 #define SCTLR_EL1_ICACHE_DIS	(0 << 12) /* Instruction cache disabled       */
-#define SCTLR_EL1_UMA_DIS	(0 << 9)  /* User Mask Access disabled        */
+#define SCTLR_EL1_UMA_EN	(1 << 9)  /* User Mask Access disabled        */
 #define SCTLR_EL1_SED_EN	(0 << 8)  /* SETEND instruction enabled       */
 #define SCTLR_EL1_ITD_EN	(0 << 7)  /* IT instruction enabled           */
 #define SCTLR_EL1_CP15BEN_DIS	(0 << 5)  /* CP15 barrier operation disabled  */
@@ -256,7 +280,7 @@ void __noreturn armv8_switch_to_el2(u64 args, u64 mach_nr, u64 fdt_addr,
  * @entry_point: kernel entry point
  * @es_flag:     execution state flag, ES_TO_AARCH64 or ES_TO_AARCH32
  */
-void armv8_switch_to_el1(u64 args, u64 mach_nr, u64 fdt_addr,
+int armv8_switch_to_el1(u64 args, u64 mach_nr, u64 fdt_addr,
 			 u64 arg4, u64 entry_point, u64 es_flag);
 void armv8_el2_to_aarch32(u64 args, u64 mach_nr, u64 fdt_addr,
 			  u64 arg4, u64 entry_point);
