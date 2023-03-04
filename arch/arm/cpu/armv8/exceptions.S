@@ -165,6 +165,7 @@ _restore_regs:
 	b	exception_exit
 
 _return_to_uboot:
+	ldp	xzr, x2, [sp],#16
 	ldp	xzr, x0, [sp],#16
     add     sp, sp, #144
 	ldp	x19, x20, [sp],#16
