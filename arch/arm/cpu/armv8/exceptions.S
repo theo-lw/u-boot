@@ -163,6 +163,11 @@ _restore_regs:
 	ldp	x27, x28, [sp],#16
 
     mrs     x29, SP_EL1
-    ldp     x29, x30, [x29]
+	ldp	x19, x20, [x29],#16
+	ldp	x21, x22, [x29],#16
+	ldp	x23, x24, [x29],#16
+	ldp	x25, x26, [x29],#16
+	ldp	x27, x28, [x29],#16
+	ldp	x29, x30, [x29]
 
 	ret
