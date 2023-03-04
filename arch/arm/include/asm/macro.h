@@ -286,10 +286,6 @@ lr	.req	x30
 	// mrs	\tmp, vbar_el2
 	// msr	vbar_el1, \tmp		/* Migrate VBAR */
 
-	/* Check switch to AArch64 EL1 or AArch32 Supervisor mode */
-	cmp	\flag, #ES_TO_AARCH32
-	b.eq	1f
-
 	/* Initialize HCR_EL2 */
 	/* Only disable PAuth traps if PAuth is supported */
 	// mrs	\tmp, id_aa64isar1_el1
@@ -307,20 +303,6 @@ lr	.req	x30
 			SPSR_EL_IRQ_MASK | SPSR_EL_FIQ_MASK |\
 			SPSR_EL_M_AARCH64 | SPSR_EL_M_EL1H)
 	msr	spsr_el2, \tmp
-	msr     elr_el2, \ep
-	eret
-
-1:
-	/* Initialize HCR_EL2 */
-	ldr	\tmp, =(HCR_EL2_RW_AARCH32 | HCR_EL2_HCD_DIS)
-	msr	hcr_el2, \tmp
-
-	/* Return to AArch32 Supervisor mode from EL2 */
-	ldr	\tmp, =(SPSR_EL_END_LE | SPSR_EL_ASYN_MASK |\
-			SPSR_EL_IRQ_MASK | SPSR_EL_FIQ_MASK |\
-			SPSR_EL_T_A32 | SPSR_EL_M_AARCH32 |\
-			SPSR_EL_M_SVC)
-	msr     spsr_el2, \tmp
 	msr     elr_el2, \ep
 	eret
 .endm
