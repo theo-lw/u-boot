@@ -138,7 +138,7 @@ _restore_regs:
 	ldp	x25, x26, [sp],#16
 	ldp	x27, x28, [sp],#16
 	ldp	x29, x30, [sp],#16
-	eret
+	ret
 
 	.align	7		 /* Current EL (SP_ELx) Synchronous Handler */
 	stp	x29, x30, [sp, #-16]!
