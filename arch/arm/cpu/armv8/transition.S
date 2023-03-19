@@ -46,7 +46,6 @@ ENDPROC(armv8_switch_to_el1)
 
 .pushsection .text.cs452_switch_to_el1, "ax"
 ENTRY(cs452_switch_to_el1)
-    mov     x30, #0xbeef
     stp     x29, x30, [sp, #-16]!
 	stp	x27, x28, [sp, #-16]!
 	stp	x25, x26, [sp, #-16]!
