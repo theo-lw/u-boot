@@ -61,7 +61,7 @@ ENTRY(cs452_switch_to_el1)
 	 */
 	br x2
 1:	cs452_switch_to_el1_m x2, x6
-ENDPROC(armv8_switch_to_el1)
+ENDPROC(cs452_switch_to_el1)
 .popsection
 
 .pushsection .text.armv8_el2_to_aarch32, "ax"
