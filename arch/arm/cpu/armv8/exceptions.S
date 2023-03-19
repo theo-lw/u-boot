@@ -99,7 +99,9 @@ _restore_regs:
 
 .p2align 2
 _return_to_uboot:
-    add     sp, sp, #272
+    add     sp, sp, #16
+	ldp	xzr, x0, [sp],#16
+    add     sp, sp, #240
 	ldp	x17, x18, [sp],#16
 	ldp	x19, x20, [sp],#16
 	ldp	x21, x22, [sp],#16
