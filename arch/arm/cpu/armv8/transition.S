@@ -44,6 +44,26 @@ ENTRY(armv8_switch_to_el1)
 ENDPROC(armv8_switch_to_el1)
 .popsection
 
+.pushsection .text.cs452_switch_to_el1, "ax"
+ENTRY(cs452_switch_to_el1)
+    stp     x29, x30, [sp, #-16]!
+	stp	x27, x28, [sp, #-16]!
+	stp	x25, x26, [sp, #-16]!
+	stp	x23, x24, [sp, #-16]!
+	stp	x21, x22, [sp, #-16]!
+	stp	x19, x20, [sp, #-16]!
+	stp	x17, x18, [sp, #-16]!
+
+	switch_el x6, 0f, 1f, 0f
+0:
+	/* x2 is kernel entry point. When running in EL1
+	 * now, jump to the address saved in x2.
+	 */
+	br x2
+1:	cs452_switch_to_el1_m x2, x6
+ENDPROC(armv8_switch_to_el1)
+.popsection
+
 .pushsection .text.armv8_el2_to_aarch32, "ax"
 WEAK(armv8_el2_to_aarch32)
 	ret

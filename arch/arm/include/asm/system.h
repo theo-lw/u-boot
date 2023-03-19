@@ -129,6 +129,23 @@
 #define SCTLR_EL1_ALIGN_DIS	(0 << 1)  /* Alignment check disabled         */
 #define SCTLR_EL1_MMU_DIS	(0)       /* MMU disabled                     */
 
+/*
+ * CS 452 definitions
+ */
+// ***************************************
+// HCR_EL2, Hypervisor Configuration Register (EL2)
+// Architecture Reference Manual Section D13.2.48
+// ***************************************
+#define CS452_HCR_RW (1 << 31)
+
+// ***************************************
+// SPSR_EL3, Saved Program Status Register (EL3)
+// Architecture Reference Manual Section C5.2.20
+// ***************************************
+#define CS452_SPSR_MASK_ALL (7 << 6)
+#define CS452_SPSR_EL1h (5 << 0)
+#define CS452_SPSR_VALUE (SPSR_MASK_ALL | SPSR_EL1h)
+
 #ifndef __ASSEMBLY__
 
 struct pt_regs;
@@ -258,6 +275,9 @@ void __noreturn armv8_switch_to_el2(u64 args, u64 mach_nr, u64 fdt_addr,
  */
 void armv8_switch_to_el1(u64 args, u64 mach_nr, u64 fdt_addr,
 			 u64 arg4, u64 entry_point, u64 es_flag);
+
+int cs452_switch_to_el1(u64 argc, u64 argv, u64 entry_point);
+
 void armv8_el2_to_aarch32(u64 args, u64 mach_nr, u64 fdt_addr,
 			  u64 arg4, u64 entry_point);
 void gic_init(void);
