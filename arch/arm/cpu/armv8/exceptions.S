@@ -191,31 +191,7 @@ vectors:
 	bl	do_error
 	b	exception_exit
 
-	.align	7		/* Lower EL Synchronous Thread */
-	stp	x29, x30, [sp, #-16]!
-	bl	_exception_entry
-	bl	do_bad_sync
-	b	exception_exit
-
-	.align	7		/* Lower EL IRQ Thread */
-	stp	x29, x30, [sp, #-16]!
-	bl	_exception_entry
-	bl	do_bad_irq
-	b	exception_exit
-
-	.align	7		/* Lower EL FIQ Thread */
-	stp	x29, x30, [sp, #-16]!
-	bl	_exception_entry
-	bl	do_bad_fiq
-	b	exception_exit
-
-	.align	7		/* Lower EL Error Thread */
-	stp	x29, x30, [sp, #-16]!
-	bl	_exception_entry
-	bl	do_bad_error
-	b	exception_exit
-
-	.align	7		 /* Lower EL (SP_ELx) Synchronous Handler */
+	.align	7		 /* Lower EL (AARCH64) Synchronous Handler */
 	ldp	x17, x18, [sp],#16
 	ldp	x19, x20, [sp],#16
 	ldp	x21, x22, [sp],#16
@@ -228,19 +204,50 @@ vectors:
 	bl	do_sync
 	b	exception_exit
 
-	.align	7		 /* Lower EL (SP_ELx) IRQ Handler */
+	.align	7		 /* Lower EL (AARCH64) IRQ Handler */
 	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_irq
 	b	exception_exit
 
-	.align	7		 /* Lower EL (SP_ELx) FIQ Handler */
+	.align	7		 /* Lower EL (AARCH64) FIQ Handler */
 	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_fiq
 	b	exception_exit
 
-	.align	7		 /* Lower EL (SP_ELx) Error Handler */
+	.align	7		 /* Lower EL (AARCH64) Error Handler */
+	stp	x29, x30, [sp, #-16]!
+	bl	_exception_entry
+	bl	do_error
+	b	exception_exit
+
+	.align	7		 /* Lower EL (AARCH32) Synchronous Handler */
+	ldp	x17, x18, [sp],#16
+	ldp	x19, x20, [sp],#16
+	ldp	x21, x22, [sp],#16
+	ldp	x23, x24, [sp],#16
+	ldp	x25, x26, [sp],#16
+	ldp	x27, x28, [sp],#16
+	ldp	x29, x30, [sp],#16
+	stp	x29, x30, [sp, #-16]!
+	bl	_exception_entry
+	bl	do_sync
+	b	exception_exit
+
+	.align	7		 /* Lower EL (AARCH32) IRQ Handler */
+	stp	x29, x30, [sp, #-16]!
+	bl	_exception_entry
+	bl	do_irq
+	b	exception_exit
+
+	.align	7		 /* Lower EL (AARCH32) FIQ Handler */
+	stp	x29, x30, [sp, #-16]!
+	bl	_exception_entry
+	bl	do_fiq
+	b	exception_exit
+
+	.align	7		 /* Lower EL (AARCH32) Error Handler */
 	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_error
