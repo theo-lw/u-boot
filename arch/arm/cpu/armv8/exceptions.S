@@ -93,14 +93,13 @@ _restore_regs:
 	ldp	x23, x24, [sp],#16
 	ldp	x25, x26, [sp],#16
 	ldp	x27, x28, [sp],#16
+	ldp	x29, x30, [sp],#16
 
-    mrs     x29, SP_EL1
-    ldp     x29, x30, [x29]
-
-	ret
+	eret
 
 .p2align 2
 _return_to_uboot:
+    add     sp, sp, #272
 	ldp	x17, x18, [sp],#16
 	ldp	x19, x20, [sp],#16
 	ldp	x21, x22, [sp],#16
@@ -161,14 +160,6 @@ vectors:
 	b	exception_exit
 
 	.align	7		 /* Current EL (SP_ELx) Synchronous Handler */
-	ldp	x17, x18, [sp],#16
-	ldp	x19, x20, [sp],#16
-	ldp	x21, x22, [sp],#16
-	ldp	x23, x24, [sp],#16
-	ldp	x25, x26, [sp],#16
-	ldp	x27, x28, [sp],#16
-	ldp	x29, x30, [sp],#16
-	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_sync
 	b	exception_exit
@@ -192,17 +183,10 @@ vectors:
 	b	exception_exit
 
 	.align	7		 /* Lower EL (AARCH64) Synchronous Handler */
-	ldp	x17, x18, [sp],#16
-	ldp	x19, x20, [sp],#16
-	ldp	x21, x22, [sp],#16
-	ldp	x23, x24, [sp],#16
-	ldp	x25, x26, [sp],#16
-	ldp	x27, x28, [sp],#16
-	ldp	x29, x30, [sp],#16
 	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_sync
-	b	exception_exit
+	b	_return_to_uboot
 
 	.align	7		 /* Lower EL (AARCH64) IRQ Handler */
 	stp	x29, x30, [sp, #-16]!
@@ -223,14 +207,6 @@ vectors:
 	b	exception_exit
 
 	.align	7		 /* Lower EL (AARCH32) Synchronous Handler */
-	ldp	x17, x18, [sp],#16
-	ldp	x19, x20, [sp],#16
-	ldp	x21, x22, [sp],#16
-	ldp	x23, x24, [sp],#16
-	ldp	x25, x26, [sp],#16
-	ldp	x27, x28, [sp],#16
-	ldp	x29, x30, [sp],#16
-	stp	x29, x30, [sp, #-16]!
 	bl	_exception_entry
 	bl	do_sync
 	b	exception_exit
