@@ -324,6 +324,26 @@ lr	.req	x30
 	eret
 .endm
 
+/*
+ * Switch from EL2 to EL1 for ARMv8
+ * @ep:     kernel entry point
+ * @tmp:    temporary register
+ *
+ * x0 is argc and x1 is argv
+ */
+.macro cs452_switch_to_el1_m, ep, tmp
+	/* Initialize Generic Timers */
+    ldr \tmp, =CS452_HCR_RW
+    msr hcr_el2, \tmp
+
+    ldr \tmp, =CS452_SPSR_VALUE
+    msr spsr_el2, \tmp
+
+    msr elr_el2, \ep
+
+    eret // -> el1_entry
+.endm
+
 #if defined(CONFIG_GICV3)
 .macro gic_wait_for_interrupt_m xreg1
 0 :	wfi

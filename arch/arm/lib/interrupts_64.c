@@ -62,7 +62,7 @@ void show_regs(struct pt_regs *regs)
 		printf("x%-2d: %016lx x%-2d: %016lx\n",
 		       i, regs->regs[i], i+1, regs->regs[i+1]);
 	printf("\n");
-	dump_instr(regs);
+	// dump_instr(regs);
 }
 
 /*

@@ -8,6 +8,7 @@
  * Misc boot support
  */
 #include <common.h>
+#include <cpu_func.h>
 #include <command.h>
 #include <net.h>
 
@@ -42,6 +43,13 @@ static int do_go(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 	if (rc != 0) rcode = 1;
 
 	printf ("## Application terminated, rc = 0x%lX\n", rc);
+
+	dcache_disable();
+	icache_disable();
+
+	dcache_enable();
+	icache_enable();
+
 	return rcode;
 }
 
