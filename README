@@ -83,6 +83,8 @@ SECTIONS {
     }
 }
 
+As an aside, I've also modified U-Boot to reset the caches after returning from a go command.
+
 Loose Ends:
 ========
 
