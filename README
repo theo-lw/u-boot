@@ -3,7 +3,7 @@
 # (C) Copyright 2000 - 2013
 # Wolfgang Denk, DENX Software Engineering, wd@denx.de.
 
-Running U-Boot for CS 452
+(CS 452) Running U-Boot 
 ========
 
 Build U-Boot with the following commands:
@@ -31,7 +31,7 @@ go 0x80000
 
 The tftpboot command occasionally times out. In those cases I just restart the Pi.
 
-Entering & exiting the kernel
+(CS 452) Entering & exiting the kernel
 ========
 
 U-Boot runs in EL2 and I've modified the go command to make it switch to EL1
@@ -40,7 +40,7 @@ running in EL2 are 1) you don't have to change boot.S all that much because the
 important registers (sp, vbar) are banked and 2) you have to call the hvc
 instruction to return to U-Boot.
 
-Setting up the caches
+(CS 452) Setting up the caches
 ========
 
 The instruction cache can be enabled as usual by setting the I bit in SCTLR_EL1. 
@@ -96,7 +96,7 @@ SECTIONS {
 
 As an aside, I've also modified U-Boot to reset the caches after returning from a go command.
 
-Loose Ends:
+(CS 452) Loose Ends:
 ========
 
 Here are some things I've considered doing but haven't yet as of TC2.
