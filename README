@@ -88,7 +88,9 @@ Loose Ends:
 
 Here are some things I've considered doing but haven't yet as of TC2.
 
+Resetting the system timer before we enter the kernel - unclear how exactly to do this.
 
+Initializing SPI/UART/GPIO before entering the kernel - I guess it doesn't matter much because we're all doing this in the kernel.
 
 Summary:
 ========
