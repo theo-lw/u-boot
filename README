@@ -3,15 +3,15 @@
 # (C) Copyright 2000 - 2013
 # Wolfgang Denk, DENX Software Engineering, wd@denx.de.
 
-CS 452:
+Running U-Boot for CS 452
 ========
 
-Build with the following commands:
+Build U-Boot with the following commands:
 
 CROSS_COMPILE=/u/cs452/public/xdev/bin/aarch64-none-elf- make rpi_4_defconfig
 CROSS_COMPILE=/u/cs452/public/xdev/bin/aarch64-none-elf- make -j8 
 
-Upload to the TFTP server with by running the following command:
+Upload U-Boot to the TFTP server with by running the following command:
 
 ./setupTFTP.sh <barcode> u-boot.bin ./arch/arm/dts/bcm2711-rpi-4-b.dtb
 
@@ -27,7 +27,68 @@ tftpboot ${loadaddr} 10.15.167.5:RPi/CS01754n/kernel8.img
 bootelf ${loadaddr}
 go 0x80000
 
-The tftpboot command refuses to work sometimes. In those cases I just restart the Pi.
+The tftpboot command occasionally times out. In those cases I just restart the Pi.
+
+Entering & exiting the kernel
+========
+
+U-Boot runs in EL2 and I've modified the go command to make it switch to EL1
+before jumping to the kernel's entry point. The practical implications of U-Boot running in EL2 are 1) you don't have to change boot.S all that much because the important registers (sp, vbar) are banked and 2) you have to call the hvc instruction to return to U-Boot.
+
+Setting up the caches
+========
+
+The instruction cache can be enabled as usual by setting the I bit in SCTLR_EL1. 
+
+Enabling the data cache can be done by setting the D and M bits in SCTLR_EL1. However, setting up the data cache is more complicated because it requires the MMU. While U-Boot sets up the MMU for you, it requires you to respect a pre-defined set of memory regions.
+
+U-Boot currently sets up the MMU to do a 1:1 mapping from virtual to physical
+addresses. It divides the addresses into three regions: a read-only region
+(0x0 - 0x2000000), a writeable region (0x2000000 - 0xfc000000), and a region for
+memory-mapped I/O (0xfc000000 - 0xffc00000). You should make sure that your linker script puts your ELF sections at the appropriate addresses! In partciular, make sure that you place your stack in the writeable region.
+
+Here's a snippet of my linker script. I put my stack in the .bss section and make sure to put .bss in the writeable region after 0x2000000.
+
+SECTIONS {
+    . = 0x80000;          /* load address */
+
+    .text.boot : {        /* boot code must start at 0x80000 */
+        KEEP(*(.text.boot))
+        KEEP(*(.text*))
+    }
+
+    . = 0x2000000;
+
+    .rodata : {
+        *(.rodata*)
+    }
+
+    .data : {
+        *(.data*)
+    }
+
+    .init_array : ALIGN(4) {
+        __init_array_start = .;
+        *(.init_array)
+        *(SORT_BY_INIT_PRIORITY(.init_array.*))
+        __init_array_end = .;
+    }
+
+    .bss (NOLOAD) : {
+        . = ALIGN(16);
+        __bss_start = .;
+        *(.bss .bss.*)
+        *(COMMON)
+        __bss_end = .;
+    }
+}
+
+Loose Ends:
+========
+
+Here are some things I've considered doing but haven't yet as of TC2.
+
+
 
 Summary:
 ========
