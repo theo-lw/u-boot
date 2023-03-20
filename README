@@ -17,7 +17,9 @@ Upload U-Boot to the TFTP server with by running the following command:
 
 Then on the terminal stop the autoboot by pressing any key within 3 seconds.
 
-Set the IP Address on the terminal with the following command, replacing 10.15.79.15n with the IP address of the particular Raspberry Pi board. For instance, board 3 should have the IP address 10.15.79.153.
+Set the IP Address on the terminal with the following command, replacing
+10.15.79.15n with the IP address of the particular Raspberry Pi board. For
+instance, board 3 should have the IP address 10.15.79.153.
 
 setenv ipaddr 10.15.79.15n
 
@@ -33,21 +35,30 @@ Entering & exiting the kernel
 ========
 
 U-Boot runs in EL2 and I've modified the go command to make it switch to EL1
-before jumping to the kernel's entry point. The practical implications of U-Boot running in EL2 are 1) you don't have to change boot.S all that much because the important registers (sp, vbar) are banked and 2) you have to call the hvc instruction to return to U-Boot.
+before jumping to the kernel's entry point. The practical implications of U-Boot
+running in EL2 are 1) you don't have to change boot.S all that much because the
+important registers (sp, vbar) are banked and 2) you have to call the hvc
+instruction to return to U-Boot.
 
 Setting up the caches
 ========
 
 The instruction cache can be enabled as usual by setting the I bit in SCTLR_EL1. 
 
-Enabling the data cache can be done by setting the D and M bits in SCTLR_EL1. However, setting up the data cache is more complicated because it requires the MMU. While U-Boot sets up the MMU for you, it requires you to respect a pre-defined set of memory regions.
+Enabling the data cache can be done by setting the D and M bits in SCTLR_EL1.
+However, setting up the data cache is more complicated because it requires the
+MMU. While U-Boot sets up the MMU for you, it requires you to respect a
+pre-defined set of memory regions.
 
 U-Boot currently sets up the MMU to do a 1:1 mapping from virtual to physical
 addresses. It divides the addresses into three regions: a read-only region
 (0x0 - 0x2000000), a writeable region (0x2000000 - 0xfc000000), and a region for
-memory-mapped I/O (0xfc000000 - 0xffc00000). You should make sure that your linker script puts your ELF sections at the appropriate addresses! In partciular, make sure that you place your stack in the writeable region.
+memory-mapped I/O (0xfc000000 - 0xffc00000). You should make sure that your
+linker script puts your ELF sections at the appropriate addresses! In
+partciular, make sure that you place your stack in the writeable region.
 
-Here's a snippet of my linker script. I put my stack in the .bss section and make sure to put .bss in the writeable region after 0x2000000.
+Here's a snippet of my linker script. I put my stack in the .bss section and
+make sure to put .bss in the writeable region after 0x2000000.
 
 SECTIONS {
     . = 0x80000;          /* load address */
