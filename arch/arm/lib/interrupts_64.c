@@ -37,6 +37,7 @@ static void show_efi_loaded_images(struct pt_regs *regs)
 	efi_print_image_infos((void *)regs->elr);
 }
 
+/*
 static void dump_instr(struct pt_regs *regs)
 {
 	u32 *addr = (u32 *)(regs->elr & ~3UL);
@@ -47,6 +48,7 @@ static void dump_instr(struct pt_regs *regs)
 		printf(i == 0 ? "(%08x) " : "%08x ", addr[i]);
 	printf("\n");
 }
+*/
 
 void show_regs(struct pt_regs *regs)
 {
