@@ -28,7 +28,7 @@ you can just skip to the instructions below.
 
 Upload the kernel.elf to the TFTP server and boot it with the following.
 
-tftpboot ${loadaddr} 10.15.167.5:RPi/CS01754n/kernel8.img
+tftpboot ${loadaddr} RPi/CS01754n/kernel8.img
 bootelf ${loadaddr}
 go 0x80000
 
