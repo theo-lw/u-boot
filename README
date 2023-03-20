@@ -23,6 +23,9 @@ instance, board 3 should have the IP address 10.15.79.153.
 
 setenv ipaddr 10.15.79.15n
 
+Note that the IP address only needs to be set once - if it has already been set,
+you can just skip to the instructions below.
+
 Upload the kernel.elf to the TFTP server and boot it with the following.
 
 tftpboot ${loadaddr} 10.15.167.5:RPi/CS01754n/kernel8.img
